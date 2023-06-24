@@ -8,15 +8,26 @@ function add() {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(e.currentTarget);
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get("name"),
+    };
 
-    const newProject = await mutationProjects.mutate({ name });
-    console.log(newProject);
+    console.log(data);
+
+    // const newProject = await mutationProjects.mutate({ name });
+    // console.log(newProject);
   };
 
   return (
     <form onSubmit={onSubmit}>
-      <Input value={name} onChange={(e) => setName(e.target.value)} />
-      <Button>Submit</Button>
+      <Input
+        name="name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <Button type="submit">Submit</Button>
     </form>
   );
 }

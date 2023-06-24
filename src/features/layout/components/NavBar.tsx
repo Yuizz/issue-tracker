@@ -20,10 +20,10 @@ import {
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 
 const links = [
-  {
-    to: "/users",
-    name: "Users",
-  },
+  // {
+  //   to: "/users",
+  //   name: "Users",
+  // },
   {
     to: "/projects",
     name: "Projects",
@@ -50,11 +50,8 @@ const NavLink = ({ to, name }: linkObj) => (
 );
 
 export default function Navbar() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: sessionData } = useSession();
-  console.log(sessionData);
-
-  if (!sessionData) return <></>;
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
@@ -68,7 +65,6 @@ export default function Navbar() {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={"center"}>
-            <Box>Logo</Box>
             <HStack
               as={"nav"}
               spacing={4}
@@ -80,29 +76,34 @@ export default function Navbar() {
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
-            <Menu>
-              <MenuButton
-                as={Button}
-                rounded={"full"}
-                variant={"link"}
-                cursor={"pointer"}
-                minW={0}
-              >
-                <Avatar
-                  size={"sm"}
-                  src={sessionData?.user?.image!}
-                  name={sessionData?.user?.name!}
-                />
-              </MenuButton>
-              <MenuList>
-                <MenuItem onClick={() => void signOut()}>
-                  Cerrar sesión
-                </MenuItem>
-                <MenuItem>Link 2</MenuItem>
-                <MenuDivider />
-                <MenuItem>Link 3</MenuItem>
-              </MenuList>
-            </Menu>
+            {!sessionData && (
+              <Button onClick={() => void signIn()}>Login</Button>
+            )}
+            {sessionData && (
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  rounded={"full"}
+                  variant={"link"}
+                  cursor={"pointer"}
+                  minW={0}
+                >
+                  <Avatar
+                    size={"sm"}
+                    src={sessionData?.user?.image!}
+                    name={sessionData?.user?.name!}
+                  />
+                </MenuButton>
+                <MenuList>
+                  <MenuItem onClick={() => void signOut()}>
+                    Cerrar sesión
+                  </MenuItem>
+                  <MenuItem>Link 2</MenuItem>
+                  <MenuDivider />
+                  <MenuItem>Link 3</MenuItem>
+                </MenuList>
+              </Menu>
+            )}
           </Flex>
         </Flex>
 

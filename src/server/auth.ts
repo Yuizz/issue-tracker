@@ -6,7 +6,6 @@ import {
   type NextAuthOptions,
   type DefaultSession,
 } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
@@ -40,7 +39,6 @@ declare module "next-auth" {
 export const authOptions: NextAuthOptions = {
   theme: {
     colorScheme: "light",
-    logo: "/static/images/logo-sedetuop.jpg",
   },
   callbacks: {
     session: ({ session, user }) => ({
