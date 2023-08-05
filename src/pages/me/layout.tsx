@@ -38,7 +38,7 @@ export default function MeLayout({ children }: Props) {
           </Text>
         </Box>
       </Flex>
-      {children}
+      <Flex w="100%">{children}</Flex>
     </Flex>
   );
 }

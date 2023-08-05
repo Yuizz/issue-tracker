@@ -5,7 +5,6 @@ import {
   Flex,
   Avatar,
   HStack,
-  Link,
   IconButton,
   Button,
   Menu,
@@ -16,8 +15,10 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
+  ButtonGroup,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { Link } from "@chakra-ui/next-js";
 
 const links = [
   // {
@@ -32,12 +33,14 @@ const links = [
 
 type linkObj = {
   to: string;
-  name: string;
+  name?: string;
+  children?: ReactNode;
 };
-const NavLink = ({ to, name }: linkObj) => (
+const NavLink = ({ to, name, children }: linkObj) => (
   <Link
-    px={2}
-    py={1}
+    px={0}
+    py={0}
+    h="max-content"
     rounded={"md"}
     _hover={{
       textDecoration: "none",
@@ -45,7 +48,7 @@ const NavLink = ({ to, name }: linkObj) => (
     }}
     href={to}
   >
-    {name}
+    {children}
   </Link>
 );
 
@@ -71,7 +74,9 @@ export default function Navbar() {
               display={{ base: "none", md: "flex" }}
             >
               {links.map((link) => (
-                <NavLink key={link.name} name={link.name} to={link.to} />
+                <NavLink key={link.name} name={link.name} to={link.to}>
+                  <Button variant={"ghost"}>{link.name}</Button>
+                </NavLink>
               ))}
             </HStack>
           </HStack>
@@ -95,12 +100,14 @@ export default function Navbar() {
                   />
                 </MenuButton>
                 <MenuList>
-                  <MenuItem onClick={() => void signOut()}>
-                    Cerrar sesión
-                  </MenuItem>
-                  <MenuItem>Link 2</MenuItem>
-                  <MenuDivider />
                   <MenuItem>Link 3</MenuItem>
+                  <NavLink to="/me" name="perfil">
+                    <MenuItem>Mi perfil</MenuItem>
+                  </NavLink>
+                  <MenuDivider />
+                  <MenuItem onClick={() => void signOut()}>
+                    <ButtonGroup>Cerrar sesión 🙋‍♂️</ButtonGroup>
+                  </MenuItem>
                 </MenuList>
               </Menu>
             )}
