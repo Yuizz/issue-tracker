@@ -1,15 +1,15 @@
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-import { AppProps, type AppType } from "next/app";
+import type { AppProps, AppType } from "next/app";
 import { api } from "~/utils/api";
-// import "~/styles/globals.css";
-import { ChakraProvider } from "@chakra-ui/react";
+import "~/styles/globals.css";
 import { MainLayout } from "~/features";
 
-import { ReactElement, ReactNode } from "react";
-import { NextPage } from "next";
+import type { ReactElement, ReactNode } from "react";
+import type { NextPage } from "next";
+import { NextUIProvider } from "@nextui-org/react";
 
-export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
@@ -25,9 +25,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
 
   return (
     <SessionProvider session={session}>
-      <ChakraProvider>
+      <NextUIProvider>
         <MainLayout>{getLayout(<Component {...pageProps} />)}</MainLayout>
-      </ChakraProvider>
+      </NextUIProvider>
     </SessionProvider>
   );
 };

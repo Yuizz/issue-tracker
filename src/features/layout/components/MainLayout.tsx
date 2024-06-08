@@ -1,4 +1,3 @@
-import { Flex, Box } from "@chakra-ui/react";
 import React from "react";
 import Navbar from "./NavBar";
 
@@ -8,10 +7,10 @@ type Props = {
 
 function MainLayout({ children }: Props) {
   return (
-    <Flex flexDirection={"column"}>
+    <div>
       <Navbar />
-      <Box w="100%">{children}</Box>
-    </Flex>
+      <div>{children}</div>
+    </div>
   );
 }
 
