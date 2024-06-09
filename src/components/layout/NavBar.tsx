@@ -3,7 +3,7 @@ import { Navbar as NextUINavbar, NavbarContent, NavbarItem, NavbarMenuToggle, Na
 import NavLink, { type linkObj } from "./NavLink";
 import AvatarDropdown from "./AvatarDropdown";
 import { useState } from "react";
-import { MdLogin } from "react-icons/md";
+import { LogIn } from "lucide-react";
 
 const links: linkObj[] = [
   {
@@ -51,7 +51,7 @@ export default function Navbar() {
           </NavbarContent>
         ) : (
           <NavbarItem>
-            <Button onClick={() => void signIn()} variant="light" color="primary">Sign in <MdLogin /></Button>
+            <Button onClick={() => void signIn()} variant="light" color="primary">Sign in <LogIn /></Button>
           </NavbarItem>
         )}
       </NextUINavbar>

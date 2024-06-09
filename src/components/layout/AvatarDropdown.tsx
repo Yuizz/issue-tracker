@@ -1,8 +1,8 @@
 import { signOut } from "next-auth/react";
 import type { Session } from "next-auth"
 import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
-import { MdLogout } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
 
 interface AvatarDropdownProps {
   user: Session["user"]
@@ -37,7 +37,7 @@ export default function AvatarDropdown({ user }: AvatarDropdownProps) {
         </DropdownItem>
         <DropdownItem key="logout" color="danger" onClick={() => void signOut({ callbackUrl: "/", redirect: true })}>
           <div className="flex items-center space-x-2 gap-4">
-            <MdLogout />
+            <LogOut />
             Log Out
           </div>
         </DropdownItem>

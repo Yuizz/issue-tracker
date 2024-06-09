@@ -6,9 +6,8 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import type { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { Tab, Tabs } from "@nextui-org/react";
-import { IoLibrary } from "react-icons/io5";
-import { TbLayoutDashboardFilled } from "react-icons/tb";
 import AddProjectModal from "~/components/projects/add/AddProjectModal";
+import { LayoutDashboard, Library } from "lucide-react";
 
 export function getServerSideProps(
   context: GetServerSidePropsContext<{ tab: string }>
@@ -42,7 +41,7 @@ const UserView: NextPageWithLayout<
       >
         <Tab key="overview" title={
           <div className="flex items-center space-x-2">
-            <TbLayoutDashboardFilled />
+            <LayoutDashboard />
             <span>Overview</span>
           </div>
         }>
@@ -50,7 +49,7 @@ const UserView: NextPageWithLayout<
         </Tab>
         <Tab key="projects" title={
           <div className="flex items-center space-x-2">
-            <IoLibrary />
+            <Library />
             <span>Projects</span>
           </div>
         }>

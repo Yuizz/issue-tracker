@@ -19,7 +19,16 @@ export const usersRouter = createTRPCRouter({
     });
   }),
 
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
-  }),
+  getMe: protectedProcedure.query(({ ctx }) => {
+    const user = ctx.session.user
+    return ctx.prisma.project.findMany({
+      where: {
+        users: {
+          some: {
+            userId: user.id
+          }
+        }
+      }
+    })
+  })
 });
