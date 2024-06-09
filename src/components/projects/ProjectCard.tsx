@@ -1,8 +1,9 @@
 import { SettingsIcon, TrashIcon } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react'
-import { Project } from '@prisma/client';
+import { type Project } from '@prisma/client';
 import { RelativeTimeElement } from '@github/relative-time-element';
+import ProjectFormModal from './ProjectFormModal';
 
 type Props = {
   project: Project & {
@@ -28,7 +29,12 @@ function ProjectCard({ project }: Props) {
         </Link>
         <div className="flex items-center space-x-3">
           <p className="text-sm text-gray">{`${project.pendingIssues} pending issues`}</p>
-          <SettingsIcon size={15} />
+          <ProjectFormModal initialData={{
+            id: project.id,
+            name: project.name,
+            description: project.description,
+            isPublic: project.isPublic
+          }} isIconOnly />
           <TrashIcon size={15} />
         </div>
       </div>

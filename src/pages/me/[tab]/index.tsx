@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import type { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { Tab, Tabs } from "@nextui-org/react";
-import AddProjectModal from "~/components/projects/add/AddProjectModal";
+import ProjectFormModal from "~/components/projects/ProjectFormModal";
 import { LayoutDashboard, Library } from "lucide-react";
 
 export function getServerSideProps(
@@ -54,7 +54,7 @@ const UserView: NextPageWithLayout<
           </div>
         }>
           <div className="flex justify-end">
-            <AddProjectModal />
+            <ProjectFormModal />
           </div>
           <ProjectsView userId={sessionData.user.id} />
         </Tab>

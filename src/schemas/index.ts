@@ -5,3 +5,7 @@ export const CreateProjectSchema = z.object({
   description: z.string().nonempty("La descripción del proyecto es requerida"),
   isPublic: z.boolean().default(false),
 })
+
+export const EditProjectSchema = z.object({
+  id: z.string().nonempty("El id del proyecto es requerido"),
+}).merge(CreateProjectSchema).partial()
