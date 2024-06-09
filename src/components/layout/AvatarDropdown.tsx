@@ -32,6 +32,9 @@ export default function AvatarDropdown({ user }: AvatarDropdownProps) {
         <DropdownItem key="see profile" onClick={() => router.replace("/me/overview")}>
           Profile
         </DropdownItem>
+        <DropdownItem key="see projects" onClick={() => router.replace("/me/projects")}>
+          Projects
+        </DropdownItem>
         <DropdownItem key="settings" onClick={() => router.replace("/settings")}>
           Settings
         </DropdownItem>

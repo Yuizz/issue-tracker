@@ -31,7 +31,7 @@ const UserView: NextPageWithLayout<
 
   if (!sessionData) return null;
   return (
-    <div className="flex p-[1rem] flex-col">
+    <div className="flex p-[1rem] flex-col w-full">
       <Tabs
         size="lg"
         aria-label="User tabs"
@@ -53,7 +53,9 @@ const UserView: NextPageWithLayout<
             <span>Projects</span>
           </div>
         }>
-          <AddProjectModal />
+          <div className="flex justify-end">
+            <AddProjectModal />
+          </div>
           <ProjectsView userId={sessionData.user.id} />
         </Tab>
       </Tabs>
