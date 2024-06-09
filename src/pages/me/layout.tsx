@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
+import { Avatar } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import React from "react";
 
@@ -10,35 +10,23 @@ export default function MeLayout({ children }: Props) {
   const { data: sessionData } = useSession();
 
   return (
-    <Flex>
-      <Flex
-        boxShadow={"lg"}
-        h="100vh"
-        p="1.5rem"
-        w={{
-          base: "100%",
-          md: "30%",
-          xl: "20%",
-        }}
-        flexDir={"column"}
-        alignItems={"center"}
-        gap="1rem"
-      >
+    <div className="flex">
+      <div className="flex flex-col items-center gap-4 p-6 w-full md:w-1/4 xl:w-1/5 bg-white shadow-lg h-screen">
         <Avatar
-          size={"2xl"}
-          src={sessionData?.user?.image!}
-          name={sessionData?.user?.name!}
+          className="w-30 h-30 text-large"
+          src={sessionData?.user?.image ?? ""}
+          name={sessionData?.user?.name ?? "User"}
         />
-        <Box>
-          <Text fontSize="3xl" fontWeight={"bold"} textAlign={"center"}>
+        <div>
+          <p className="text-3xl font-bold align-middle">
             {sessionData?.user?.name}
-          </Text>
-          <Text fontSize="xl" textAlign={"center"}>
+          </p>
+          <p className="text-xl align-middle">
             {sessionData?.user?.email}
-          </Text>
-        </Box>
-      </Flex>
-      <Flex w="100%">{children}</Flex>
-    </Flex>
+          </p>
+        </div>
+      </div>
+      <div className="flex">{children}</div>
+    </div>
   );
 }

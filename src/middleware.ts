@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 import type { NextRequest } from 'next/server'
 import { env } from './env.mjs'
-import { signIn } from 'next-auth/react'
 
 // This function can be marked `async` if using `await` inside
 const publicPaths = [

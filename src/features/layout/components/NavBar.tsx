@@ -3,12 +3,9 @@ import { Navbar as NextUINavbar, NavbarContent, NavbarItem, NavbarMenuToggle, Na
 import NavLink, { type linkObj } from "./NavLink";
 import AvatarDropdown from "./AvatarDropdown";
 import { useState } from "react";
+import { MdLogin } from "react-icons/md";
 
 const links: linkObj[] = [
-  // {
-  //   to: "/users",
-  //   name: "Users",
-  // },
   {
     href: "/",
     name: "Home",
@@ -19,8 +16,6 @@ const links: linkObj[] = [
     name: "Projects",
   },
 ];
-
-
 
 export default function Navbar() {
   const [isMenuOpen, updateMenuState] = useState(false);
@@ -56,7 +51,7 @@ export default function Navbar() {
           </NavbarContent>
         ) : (
           <NavbarItem>
-            <Button onClick={() => void signIn()}>Sign in</Button>
+            <Button onClick={() => void signIn()} variant="light" color="primary">Sign in <MdLogin /></Button>
           </NavbarItem>
         )}
       </NextUINavbar>

@@ -1,7 +1,8 @@
 import { signOut } from "next-auth/react";
 import type { Session } from "next-auth"
-import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, NavbarContent } from "@nextui-org/react";
+import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 import NavLink from "./NavLink";
+import { MdLogout } from "react-icons/md";
 
 interface AvatarDropdownProps {
   user: Session["user"]
@@ -26,11 +27,17 @@ export default function AvatarDropdown({ user }: AvatarDropdownProps) {
           <p className="font-semibold">Signed in as</p>
           <p className="font-semibold">{user.email ?? ""}</p>
         </DropdownItem>
-        <DropdownItem key="profile">
+        <DropdownItem key="see profile">
           <NavLink href="/me">Profile</NavLink>
         </DropdownItem>
-        <DropdownItem key="logout" color="danger" onClick={() => void signOut()}>
-          Log Out
+        <DropdownItem key="settings">
+          <NavLink href="/settings">Settings</NavLink>
+        </DropdownItem>
+        <DropdownItem key="logout" color="danger" onClick={() => void signOut({ callbackUrl: "/", redirect: true })}>
+          <div className="flex items-center space-x-2 gap-4">
+            <MdLogout />
+            Log Out
+          </div>
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
