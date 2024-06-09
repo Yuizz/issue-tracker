@@ -1,4 +1,4 @@
-import React, { type ReactElement, useEffect } from "react";
+import React, { type ReactElement } from "react";
 import type { NextPageWithLayout } from "../../_app";
 import MeLayout from "../layout";
 import { ProjectsView } from "~/features";

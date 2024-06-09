@@ -1,13 +1,14 @@
 import { signOut } from "next-auth/react";
 import type { Session } from "next-auth"
 import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
-import NavLink from "./NavLink";
 import { MdLogout } from "react-icons/md";
+import { useRouter } from "next/navigation";
 
 interface AvatarDropdownProps {
   user: Session["user"]
 }
 export default function AvatarDropdown({ user }: AvatarDropdownProps) {
+  const router = useRouter()
 
   return (
     <Dropdown placement="bottom-end">
@@ -23,15 +24,16 @@ export default function AvatarDropdown({ user }: AvatarDropdownProps) {
         />
       </DropdownTrigger>
       <DropdownMenu aria-label="Profile Actions" variant="flat">
-        <DropdownItem key="profile" className="h-14 gap-2">
+        <DropdownItem key="profile" showDivider className="h-14 gap-2">
           <p className="font-semibold">Signed in as</p>
           <p className="font-semibold">{user.email ?? ""}</p>
         </DropdownItem>
-        <DropdownItem key="see profile">
-          <NavLink href="/me">Profile</NavLink>
+
+        <DropdownItem key="see profile" onClick={() => router.replace("/me/overview")}>
+          Profile
         </DropdownItem>
-        <DropdownItem key="settings">
-          <NavLink href="/settings">Settings</NavLink>
+        <DropdownItem key="settings" onClick={() => router.replace("/settings")}>
+          Settings
         </DropdownItem>
         <DropdownItem key="logout" color="danger" onClick={() => void signOut({ callbackUrl: "/", redirect: true })}>
           <div className="flex items-center space-x-2 gap-4">

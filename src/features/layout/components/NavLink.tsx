@@ -5,6 +5,7 @@ export type linkObj = {
   href: string;
   name?: string;
   children?: ReactNode;
+  width?: string;
 };
 
 export default function NavLink({ href, children }: linkObj): ReactNode {
