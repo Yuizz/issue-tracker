@@ -20,15 +20,13 @@ export default function AddProjectModal() {
       onCloseModal()
     },
     onError: () => {
-      console.log("error")
+      console.error("error trying to create the project")
     }
   })
 
   const onSubmit = handleSubmit((data) => {
     createProject.mutate(data)
   })
-
-  console.log(errors)
 
   return <>
     <Button onPress={onOpen} color="primary" startContent={<FolderPlus />}>Agregar proyecto</Button>
