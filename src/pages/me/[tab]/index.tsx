@@ -1,14 +1,14 @@
 import React, { type ReactElement } from "react";
 import type { NextPageWithLayout } from "../../_app";
 import MeLayout from "../layout";
-import { ProjectsView } from "~/features";
+import { ProjectsView } from "~/components";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import type { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { Tab, Tabs } from "@nextui-org/react";
 import { IoLibrary } from "react-icons/io5";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
-import AddProjectModal from "~/features/profile/components/AddProjectModal";
+import AddProjectModal from "~/components/projects/add/AddProjectModal";
 
 export function getServerSideProps(
   context: GetServerSidePropsContext<{ tab: string }>
