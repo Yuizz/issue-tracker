@@ -8,6 +8,7 @@ import type { GetServerSidePropsContext, InferGetServerSidePropsType } from "nex
 import { Tab, Tabs } from "@nextui-org/react";
 import { IoLibrary } from "react-icons/io5";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
+import AddProjectModal from "~/features/profile/components/AddProjectModal";
 
 export function getServerSideProps(
   context: GetServerSidePropsContext<{ tab: string }>
@@ -33,6 +34,7 @@ const UserView: NextPageWithLayout<
   return (
     <div className="flex p-[1rem] flex-col">
       <Tabs
+        size="lg"
         aria-label="User tabs"
         selectedKey={tab}
         onSelectionChange={(key) => replace(`/me/${key}`)}
@@ -52,6 +54,7 @@ const UserView: NextPageWithLayout<
             <span>Projects</span>
           </div>
         }>
+          <AddProjectModal />
           <ProjectsView userId={sessionData.user.id} />
         </Tab>
       </Tabs>
