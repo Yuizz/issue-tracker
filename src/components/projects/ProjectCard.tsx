@@ -64,7 +64,7 @@ function ProjectCard({ project, isEditable = false, userId }: Props) {
               )
             }
           </div>
-          <p className="text-sm text-slate-600 font-light">
+          <p className="text-sm text-slate-600 dark:text-slate-200 font-light">
             <relative-time datetime={project.lastActivity.toISOString()} />
           </p>
         </div>

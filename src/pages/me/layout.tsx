@@ -11,7 +11,7 @@ export default function MeLayout({ children }: Props) {
 
   return (
     <div className="flex flex-col md:flex-row">
-      <div className="flex md:flex-col items-center gap-4 p-6 w-full md:w-1/4 xl:w-1/5 bg-white shadow-lg md:h-screen">
+      <div className="flex md:flex-col items-center gap-4 p-6 w-full md:w-1/4 xl:w-1/5 shadow-lg dark:bg-gray-950 md:h-screen">
         <Avatar
           className="w-30 h-30 text-large"
           src={sessionData?.user?.image ?? ""}

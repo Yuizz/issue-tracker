@@ -8,6 +8,7 @@ import { MainLayout } from "~/components";
 import type { ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";
 import { NextUIProvider } from "@nextui-org/react";
+import { ThemeProvider } from "next-themes";
 
 export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -25,9 +26,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
 
   return (
     <SessionProvider>
-      <NextUIProvider>
-        <MainLayout>{getLayout(<Component {...pageProps} />)}</MainLayout>
-      </NextUIProvider>
+      <ThemeProvider attribute="class">
+        <NextUIProvider>
+          <MainLayout>{getLayout(<Component {...pageProps} />)}</MainLayout>
+        </NextUIProvider>
+      </ThemeProvider>
     </SessionProvider>
   );
 };

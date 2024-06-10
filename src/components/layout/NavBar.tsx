@@ -4,6 +4,7 @@ import NavLink, { type linkObj } from "./NavLink";
 import AvatarDropdown from "./AvatarDropdown";
 import { useState } from "react";
 import { LogIn } from "lucide-react";
+import ColorModeButton from "~/components/theme/ColorModeButton";
 
 const links: linkObj[] = [
   {
@@ -45,15 +46,16 @@ export default function Navbar() {
           ))}
         </NavbarContent>
 
-        {sessionData ? (
-          <NavbarContent as="div" justify="end">
+        <NavbarContent as="div" justify="end">
+          <ColorModeButton />
+          {sessionData ? (
             <AvatarDropdown user={sessionData.user} />
-          </NavbarContent>
-        ) : (
-          <NavbarItem>
-            <Button onClick={() => void signIn()} variant="light" color="primary">Sign in <LogIn /></Button>
-          </NavbarItem>
-        )}
+          ) : (
+            <NavbarItem>
+              <Button onClick={() => void signIn()} variant="light" color="primary">Sign in <LogIn /></Button>
+            </NavbarItem>
+          )}
+        </NavbarContent>
       </NextUINavbar>
     </>
   );
