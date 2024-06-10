@@ -4,6 +4,7 @@ import React from 'react'
 import { type Project } from '@prisma/client';
 import { RelativeTimeElement } from '@github/relative-time-element';
 import ProjectFormModal from './ProjectFormModal';
+import DeleteProjectModal from './DeleteProjectModal';
 
 type Props = {
   project: Project & {
@@ -39,7 +40,7 @@ function ProjectCard({ project, isEditable = false, userId }: Props) {
               description: project.description,
               isPublic: project.isPublic
             }} isIconOnly />
-          <TrashIcon size={15} />
+          <DeleteProjectModal projectId={project.id} projectName={project.name} isIconOnly />
         </div>
       </div>
       <div className="flex flex-col gap-4">

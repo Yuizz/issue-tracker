@@ -48,8 +48,8 @@ export default function ProjectFormModal({ initialData, userId, isIconOnly }: Pr
 
   const createProject = api.projects.create.useMutation({
     onSuccess: async () => {
+      await utils.projects.getByUser.invalidate()
       onCloseModal()
-      if (userId) await utils.projects.getByUser.invalidate({ userId })
     },
     onError: () => {
       console.error("error trying to create the project")
@@ -58,8 +58,8 @@ export default function ProjectFormModal({ initialData, userId, isIconOnly }: Pr
 
   const updateProject = api.projects.update.useMutation({
     onSuccess: async () => {
-      onCloseModal()
       if (userId) await utils.projects.getByUser.invalidate({ userId })
+      onCloseModal()
     },
     onError: () => {
       console.error("error trying to update the project")
