@@ -14,11 +14,13 @@ type Props = {
     name: string
     description: string | null
     isPublic: boolean
-  },
+  }
+  userId?: string
   isIconOnly?: boolean
 }
 
-export default function ProjectFormModal({ initialData, isIconOnly }: Props) {
+export default function ProjectFormModal({ initialData, userId, isIconOnly }: Props) {
+  const utils = api.useContext()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const {
     register,
@@ -45,17 +47,19 @@ export default function ProjectFormModal({ initialData, isIconOnly }: Props) {
   }
 
   const createProject = api.projects.create.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       onCloseModal()
+      if (userId) await utils.projects.getByUser.invalidate({ userId })
     },
     onError: () => {
       console.error("error trying to create the project")
-    }
+    },
   })
 
   const updateProject = api.projects.update.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       onCloseModal()
+      if (userId) await utils.projects.getByUser.invalidate({ userId })
     },
     onError: () => {
       console.error("error trying to update the project")

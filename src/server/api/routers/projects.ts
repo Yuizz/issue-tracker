@@ -93,7 +93,7 @@ export const projectsRouter = createTRPCRouter({
             status: {
               notIn: ["closed", "canceled", "done"]
             }
-          }
+          },
         })
       }
 
@@ -149,6 +149,6 @@ export const projectsRouter = createTRPCRouter({
         }
       }))
 
-      return formattedProjects;
+      return formattedProjects.sort((a, b) => b.lastActivity.getTime() - a.lastActivity.getTime());
     })
 });

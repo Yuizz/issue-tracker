@@ -1,4 +1,4 @@
-import { SettingsIcon, TrashIcon } from 'lucide-react';
+import { TrashIcon } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react'
 import { type Project } from '@prisma/client';
@@ -10,9 +10,11 @@ type Props = {
     pendingIssues: number,
     lastActivity: Date
   }
+  isEditable?: boolean
+  userId?: string
 }
 
-function ProjectCard({ project }: Props) {
+function ProjectCard({ project, isEditable = false, userId }: Props) {
 
   if (!window.customElements.get('relative-time')) {
     window.customElements.define('relative-time', RelativeTimeElement);
@@ -29,16 +31,18 @@ function ProjectCard({ project }: Props) {
         </Link>
         <div className="flex items-center space-x-3">
           <p className="text-sm text-gray">{`${project.pendingIssues} pending issues`}</p>
-          <ProjectFormModal initialData={{
-            id: project.id,
-            name: project.name,
-            description: project.description,
-            isPublic: project.isPublic
-          }} isIconOnly />
+          <ProjectFormModal
+            userId={userId}
+            initialData={{
+              id: project.id,
+              name: project.name,
+              description: project.description,
+              isPublic: project.isPublic
+            }} isIconOnly />
           <TrashIcon size={15} />
         </div>
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-4">
         <p
           className="mb-2 truncate font-mono text-sm text-neutral-500 dark:text-neutral-400"
           title={"Some other text"}

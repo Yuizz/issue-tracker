@@ -13,7 +13,7 @@ function ProjectsView({ userId }: Props) {
   return (
     <div className="grid grid-cols-responsive-300 w-full gap-3 pt-3">
       {data?.map(project => (
-        <ProjectCard key={project.id} project={project} />
+        <ProjectCard key={project.id} project={project} isEditable userId={userId} />
       ))}
     </div>
   )
