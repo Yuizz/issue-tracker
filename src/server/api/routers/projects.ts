@@ -81,6 +81,43 @@ export const projectsRouter = createTRPCRouter({
       })
     }),
 
+  delete: protectedProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
+    const user = ctx.session.user;
+    const project = await ctx.prisma.project.findFirst({
+      include: {
+        users: true
+      },
+      where: {
+        id: input,
+        users: {
+          some: {
+            userId: user.id,
+          }
+        }
+      }
+    })
+
+    if (!project) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Project not found"
+      })
+    }
+
+    if (project.users.find((u) => u.isOwner && u.userId === user.id) === undefined) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "You don't have permission to delete this project"
+      })
+    }
+
+    return ctx.prisma.project.delete({
+      where: {
+        id: input
+      }
+    })
+  }),
+
   getByUser: protectedProcedure
     .input(z.object({ userId: z.string() }))
     .query(async ({ ctx, input }) => {

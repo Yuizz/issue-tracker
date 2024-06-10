@@ -42,14 +42,14 @@ function ProjectCard({ project, isEditable = false, userId }: Props) {
           <TrashIcon size={15} />
         </div>
       </div>
-      <div className="flex justify-between gap-4">
+      <div className="flex flex-col gap-4">
         <p
-          className="mb-2 truncate font-mono text-sm text-neutral-500 dark:text-neutral-400"
-          title={"Some other text"}
+          className="mb-2 line-clamp-2 h-[2.5rem] overflow-hidden font-mono text-sm text-neutral-500 dark:text-neutral-400"
+          title={"Description"}
         >
           {project.description}
         </p>
-        <p className="text-sm text-slate-600 font-light">
+        <p className="text-sm text-slate-600 font-light text-end">
           <relative-time datetime={project.lastActivity.toISOString()} />
         </p>
       </div>

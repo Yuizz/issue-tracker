@@ -1,6 +1,6 @@
 import { signOut } from "next-auth/react";
 import type { Session } from "next-auth"
-import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
+import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, User } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
 
@@ -24,9 +24,14 @@ export default function AvatarDropdown({ user }: AvatarDropdownProps) {
         />
       </DropdownTrigger>
       <DropdownMenu aria-label="Profile Actions" variant="flat">
-        <DropdownItem key="profile" showDivider className="h-14 gap-2">
-          <p className="font-semibold">Signed in as</p>
-          <p className="font-semibold">{user.email ?? ""}</p>
+        <DropdownItem key="profile" showDivider className="h-14 gap-2" onClick={() => router.replace("/me")}>
+          <User
+            name={user.name ?? ""}
+            description={user.email ?? ""}
+            avatarProps={{
+              src: user.image ?? "",
+            }}
+          />
         </DropdownItem>
 
         <DropdownItem key="see profile" onClick={() => router.replace("/me/overview")}>
