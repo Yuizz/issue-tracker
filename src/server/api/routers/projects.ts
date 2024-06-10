@@ -118,6 +118,53 @@ export const projectsRouter = createTRPCRouter({
     })
   }),
 
+  getAllPublic: protectedProcedure.query(async ({ ctx }) => {
+    const getPendingIssuesCount = async (projectId: string) => {
+      return await ctx.prisma.issue.count({
+        where: {
+          projectId,
+          status: {
+            notIn: ["closed", "canceled", "done"]
+          }
+        }
+      })
+    }
+
+    const projects = await ctx.prisma.project.findMany({
+      where: {
+        isPublic: true
+      },
+      orderBy: {
+        updatedAt: "desc"
+      }
+    })
+
+    const formattedProjects = await Promise.all(projects.map(async (project) => {
+      const pendingIssues = await getPendingIssuesCount(project.id)
+      const lastIssue = await ctx.prisma.issue.findFirst({
+        where: {
+          projectId: project.id,
+        },
+        orderBy: {
+          updatedAt: "desc"
+        }
+      })
+
+      let lastActivity: Date = project.updatedAt
+      if (lastIssue && lastIssue.updatedAt) {
+        lastActivity = lastIssue.updatedAt
+      }
+
+      return {
+        ...project,
+        lastActivity,
+        pendingIssues
+      }
+    }))
+
+    return formattedProjects
+  }),
+
   getByUser: protectedProcedure
     .input(z.object({ userId: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -176,7 +223,7 @@ export const projectsRouter = createTRPCRouter({
         // last activity is the last issue update or projeect updatedAt whenever is newer
         let lastActivity: Date = project.updatedAt
         if (lastIssue && lastIssue.updatedAt) {
-          lastActivity = lastIssue.updatedAt as Date
+          lastActivity = lastIssue.updatedAt
         }
 
         return {
