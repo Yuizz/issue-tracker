@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 export const CreateProjectSchema = z.object({
-  name: z.string().nonempty("El nombre del proyecto es requerido"),
-  description: z.string().nonempty("La descripción del proyecto es requerida"),
+  name: z.string().nonempty("The name of the project is required"),
+  description: z.string().nonempty("The description of the project is required"),
   isPublic: z.boolean().default(false),
 })
 
 export const EditProjectSchema = z.object({
-  id: z.string().nonempty("El id del proyecto es requerido"),
+  id: z.string().nonempty("The id of the project is required"),
 }).merge(CreateProjectSchema).partial()

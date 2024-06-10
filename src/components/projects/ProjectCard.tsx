@@ -1,10 +1,11 @@
-import { TrashIcon } from 'lucide-react';
+import { Lock, LockOpen, TrashIcon } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react'
 import { type Project } from '@prisma/client';
 import { RelativeTimeElement } from '@github/relative-time-element';
 import ProjectFormModal from './ProjectFormModal';
 import DeleteProjectModal from './DeleteProjectModal';
+import { Chip } from '@nextui-org/react';
 
 type Props = {
   project: Project & {
@@ -32,15 +33,18 @@ function ProjectCard({ project, isEditable = false, userId }: Props) {
         </Link>
         <div className="flex items-center space-x-3">
           <p className="text-sm text-gray">{`${project.pendingIssues} pending issues`}</p>
-          <ProjectFormModal
-            userId={userId}
-            initialData={{
-              id: project.id,
-              name: project.name,
-              description: project.description,
-              isPublic: project.isPublic
-            }} isIconOnly />
-          <DeleteProjectModal projectId={project.id} projectName={project.name} isIconOnly />
+          {isEditable && <>
+            <ProjectFormModal
+              userId={userId}
+              initialData={{
+                id: project.id,
+                name: project.name,
+                description: project.description,
+                isPublic: project.isPublic
+              }} isIconOnly />
+            <DeleteProjectModal projectId={project.id} projectName={project.name} isIconOnly />
+          </>
+          }
         </div>
       </div>
       <div className="flex flex-col gap-4">
@@ -50,9 +54,20 @@ function ProjectCard({ project, isEditable = false, userId }: Props) {
         >
           {project.description}
         </p>
-        <p className="text-sm text-slate-600 font-light text-end">
-          <relative-time datetime={project.lastActivity.toISOString()} />
-        </p>
+        <div className="flex justify-between">
+          <div>
+            {project.isPublic ? (
+              <Chip color="primary" startContent={<LockOpen size={15} />} size="sm">public</Chip>
+            )
+              : (
+                <Chip color="warning" startContent={<Lock size={15} />} size="sm">private</Chip>
+              )
+            }
+          </div>
+          <p className="text-sm text-slate-600 font-light">
+            <relative-time datetime={project.lastActivity.toISOString()} />
+          </p>
+        </div>
       </div>
     </div>
   )

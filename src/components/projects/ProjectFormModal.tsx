@@ -85,7 +85,7 @@ export default function ProjectFormModal({ initialData, userId, isIconOnly }: Pr
       )
       :
       <Button onPress={onOpen} color="primary" startContent={initialData ? <SettingsIcon /> : <FolderPlus />}>
-        {initialData ? "Editar proyecto" : "Agregar proyecto"}
+        {initialData ? "Edit project" : "New project"}
       </Button>
     }
 
@@ -95,8 +95,8 @@ export default function ProjectFormModal({ initialData, userId, isIconOnly }: Pr
           <ModalHeader>
             {
               initialData
-                ? `Editar proyecto ${initialData.name}`
-                : "Agregar proyecto"
+                ? `Edit project ${initialData.name}`
+                : "New project"
             }
           </ModalHeader>
           <form onSubmit={onSubmit}>
@@ -105,7 +105,7 @@ export default function ProjectFormModal({ initialData, userId, isIconOnly }: Pr
 
                 <Input
                   autoFocus
-                  label="Nombre del proyecto"
+                  label="Name of the project"
                   placeholder="Issue Tracker"
                   variant="bordered"
                   isRequired
@@ -114,8 +114,8 @@ export default function ProjectFormModal({ initialData, userId, isIconOnly }: Pr
                   {...register("name")}
                 />
                 <Textarea
-                  label="Descripción"
-                  placeholder="Un sistema de seguimiento de problemas"
+                  label="Description"
+                  placeholder="A simple issue tracker for your projects"
                   variant="bordered"
                   isRequired
                   isInvalid={errors.description !== undefined}
@@ -123,14 +123,14 @@ export default function ProjectFormModal({ initialData, userId, isIconOnly }: Pr
                   {...register("description")}
                 />
                 <Switch color="success" size="sm" {...register("isPublic")}>
-                  <span className="font-semibold">Proyecto público</span>
+                  <span className="font-semibold">Everyone can see it</span>
                 </Switch>
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" variant="flat" onPress={onCloseModal}>Cancelar</Button>
+              <Button color="danger" variant="flat" onPress={onCloseModal}>Cancel</Button>
               <Button color="primary" type="submit" isLoading={createProject.isLoading || updateProject.isLoading}>
-                {initialData ? "Actualizar" : "Agregar"}
+                {initialData ? "Update" : "Create"}
               </Button>
             </ModalFooter>
           </form>
