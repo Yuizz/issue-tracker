@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import {
   createTRPCRouter,
@@ -5,24 +6,44 @@ import {
   protectedProcedure,
 } from "~/server/api/trpc";
 
-export const exampleRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
+export const issuesRouter = createTRPCRouter({
+  getByProjectId: publicProcedure.input(
+    z.object({
+      projectId: z.string()
+    })
+  ).query(async ({ ctx, input }) => {
+    const { projectId } = input
+    const project = await ctx.prisma.project.findUnique({
+      where: {
+        id: projectId
+      },
+      include: {
+        users: true
+      }
+    })
 
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.user.findMany({
-      select: {
-        id: true,
-        name: true
-    }});
-  }),
+    if (!project || (!project.isPublic && (!ctx || !ctx.session))) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Project not found"
+      })
+    }
 
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
-  }),
+    const user = ctx.session.user;
+    if (!project.isPublic && !project.users.some(u => u.userId === user.id)) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Project not found"
+      })
+    }
+
+    const issues = await ctx.prisma.issue.groupBy({
+      by: ["status"],
+      where: {
+        projectId
+      },
+    })
+
+    return issues
+  })
 });

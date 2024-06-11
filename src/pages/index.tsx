@@ -21,12 +21,10 @@ export default function Home() {
             Issue Tracker is a simple and easy-to-use project management tool that helps you keep track of your projects and tasks.
           </p>
           <div className="mt-8 items-center justify-center gap-x-3 space-y-3 duration-700 animate-in fade-in-30 sm:flex sm:space-y-0">
-            <Button href="/me/projects" as={Link} size="lg" variant="flat" color="default">
+            <Button className="animate-bounce animate-once animate-duration-[2000ms]" href="/me/projects" as={Link} size="lg" variant="flat" color="default">
               <Book size={15} />
               <span>Create a project</span>
             </Button>
-            {/* <a className="inline-flex items-center space-x-3 justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-neutral-700 focus-visible:ring-neutral-500 bg-neutral-800 text-neutral-50 shadow hover:bg-neutral-800/90 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:bg-neutral-700/50 h-12 rounded-md px-5 group" href="/dashboard"> */}
-            {/* </a> */}
           </div>
         </section>
       </main>

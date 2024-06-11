@@ -14,11 +14,19 @@ const publicPaths = [
 ]
 export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request, secret: env.NEXTAUTH_SECRET })
+  const { pathname } = request.nextUrl
 
-  if (!token && !publicPaths.includes(request.url)) {
+  // Allow public paths
+  if (publicPaths.includes(pathname)) {
+    return NextResponse.next()
+  }
+
+  // Redirect to signin if user not authenticated
+  if (!token) {
     return NextResponse.redirect(new URL('/api/auth/signin?callbackUrl=' + request.url, request.url))
   }
 
+  //User is authenticated
   return NextResponse.next()
 }
 

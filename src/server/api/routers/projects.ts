@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   createTRPCRouter,
   protectedProcedure,
+  publicProcedure,
 } from "~/server/api/trpc";
 import { type Prisma } from "@prisma/client"
 import { TRPCError } from "@trpc/server";
@@ -118,7 +119,7 @@ export const projectsRouter = createTRPCRouter({
     })
   }),
 
-  getAllPublic: protectedProcedure.query(async ({ ctx }) => {
+  getAllPublic: publicProcedure.query(async ({ ctx }) => {
     const getPendingIssuesCount = async (projectId: string) => {
       return await ctx.prisma.issue.count({
         where: {
