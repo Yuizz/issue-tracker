@@ -56,7 +56,9 @@ const UserView: NextPageWithLayout<
           <div className="flex justify-end">
             <ProjectFormModal />
           </div>
-          <ProjectsView userId={sessionData.user.id} />
+          <div className="duration-700 animate-in fade-in-30 slide-in-from-bottom-2">
+            <ProjectsView userId={sessionData.user.id} />
+          </div>
         </Tab>
       </Tabs>
     </div>

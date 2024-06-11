@@ -7,7 +7,7 @@ function index() {
   const projects = projectsQuery.data;
   return (
 
-    <div className="grid grid-cols-responsive-300 w-full gap-3 pt-3 px-8">
+    <div className="grid grid-cols-responsive-300 w-full gap-3 pt-3 px-8 duration-500 animate-in fade-in-5 slide-in-from-bottom-2">
       {projects?.map(project => (
         <ProjectCard key={project.id} project={project} />
       ))}
