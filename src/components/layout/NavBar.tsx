@@ -24,7 +24,7 @@ export default function Navbar() {
 
   return (
     <>
-      <NextUINavbar onMenuOpenChange={updateMenuState}>
+      <NextUINavbar className="max-h-[5rem] border-b-1 border-b-slate-300 dark:border-b-slate-700" onMenuOpenChange={updateMenuState}>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
