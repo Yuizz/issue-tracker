@@ -16,12 +16,14 @@ export const projectsRouter = createTRPCRouter({
     }))
     .mutation(({ ctx, input }) => {
       const user = ctx.session.user;
+      const slug = input.name.toLowerCase().replace(/ /g, "-");
 
       return ctx.prisma.project.create({
         data: {
           name: input.name,
           description: input.description,
           isPublic: input.isPublic,
+          slug,
           users: {
             create: {
               userId: user.id,
@@ -70,6 +72,7 @@ export const projectsRouter = createTRPCRouter({
         })
       }
 
+      const slug = input.name.toLowerCase().replace(/ /g, "-");
       return ctx.prisma.project.update({
         where: {
           id: input.id
@@ -77,6 +80,7 @@ export const projectsRouter = createTRPCRouter({
         data: {
           name: input.name,
           description: input.description,
+          slug,
           isPublic: input.isPublic
         }
       })
@@ -165,6 +169,68 @@ export const projectsRouter = createTRPCRouter({
 
     return formattedProjects
   }),
+
+  getById: protectedProcedure
+    .input(z.object({ id: z.string() })).
+    query(async ({ ctx, input }) => {
+      const project = await ctx.prisma.project.findFirst({
+        where: {
+          id: input.id
+        }
+      })
+
+      if (!project) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Project not found"
+        })
+      }
+
+      return project
+    }),
+
+  getBySlug: publicProcedure
+    .input(z.object({ slug: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const project = await ctx.prisma.project.findFirst({
+        where: {
+          slug: input.slug
+        },
+        include: {
+          users: true
+        }
+      })
+
+      if (!project) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Project not found"
+        })
+      }
+
+      if (project.isPublic) return project
+
+      const user = ctx.session?.user
+      if (!user || !user.id) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Project not found"
+        })
+      }
+
+      const userInProject = project.users.find((u) => {
+        return u.userId === user?.id
+      })
+
+      if (!userInProject) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Project not found"
+        })
+      }
+
+      return project
+    }),
 
   getByUser: protectedProcedure
     .input(z.object({ userId: z.string() }))

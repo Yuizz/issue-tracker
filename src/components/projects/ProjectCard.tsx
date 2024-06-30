@@ -26,7 +26,7 @@ function ProjectCard({ project, isEditable = false, userId }: Props) {
     <div className="flex w-full min-h-20 flex-col rounded-md border border-neutral-200 p-3 shadow-sm dark:border-neutral-800">
       <div className="mb-1 flex w-full items-center justify-between space-x-2">
         <Link
-          href={`/projects/${project.id}`}
+          href={`/projects/${project.slug}`}
           className="block  space-x-[1px] overflow-hidden truncate font-medium transition-opacity duration-75 hover:opacity-80"
         >
           <span>{project.name}</span>
