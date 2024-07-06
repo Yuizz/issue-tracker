@@ -5,8 +5,10 @@ import { api } from '~/utils/api';
 import Layout from './layout';
 import Overview from '~/components/projects/view/Overview';
 import ProjectNotFound from '~/components/projects/ProjectNotFound';
-import { Accordion, AccordionItem, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react';
+import { Accordion, AccordionItem, Spinner } from '@nextui-org/react';
+import styles from "./styles.module.css"
 import IssuesTable from '~/components/issues/IssuesTable';
+import IssueModal from '~/components/issues/IssueModal';
 
 export function getServerSideProps(
   context: GetServerSidePropsContext<{ slug: string }>
@@ -45,30 +47,36 @@ const Index: PageWithLayoutType = ({ slug }) => {
         <div>{project.data?.name}</div>
         <Overview name={project.data?.name || ''} />
       </section>
-      <div className="py-10">
-        <Accordion
-          selectionMode="multiple"
-          defaultExpandedKeys={["pending"]}
-          showDivider={false}>
-          <AccordionItem
-            key="pending"
-            aria-label="Pending issues"
-            title="Pending"
-            subtitle={`${(issues.data?.pending.length || "0")} issues`}>
-            <div className="flex justify-center px-2">
-              {issues.data?.pending && issues.data.pending.length === 0 && <p className="text-gray-600">No issues</p>}
-              {issues.data?.pending && issues.data.pending.length > 0 && <IssuesTable issues={issues.data?.pending} />}
-            </div>
-          </AccordionItem>
+      <section>
+        <IssueModal projectId={project.data?.id} />
+        <div className="py-10">
+          <Accordion
+            isCompact={true}
+            selectionMode="multiple"
+            defaultExpandedKeys={["pending"]}
+            className="custom-accordion"
+            showDivider={false}>
+            <AccordionItem
+              indicator={({ isOpen }) => (isOpen ? <>▼</> : <>▶</>)}
+              key="pending"
+              aria-label="Pending issues"
+              title="Pending"
+              subtitle={`${(issues.data?.pending.length || "0")} issues`}>
+              <div className="flex justify-center px-2">
+                {issues.data?.pending && issues.data.pending.length === 0 && <p className="text-gray-600">No issues</p>}
+                {issues.data?.pending && issues.data.pending.length > 0 && <IssuesTable issues={issues.data?.pending} />}
+              </div>
+            </AccordionItem>
 
-          <AccordionItem key="done" title="Completed" subtitle={`${issues.data?.done?.length || 0} issues`}>
-            <div className="flex justify-center px-2">
-              {issues.data?.done && issues.data.done.length === 0 && <p className="text-gray-600">No issues</p>}
-              {issues.data?.done && issues.data.done.length > 0 && <IssuesTable issues={issues.data?.done} />}
-            </div>
-          </AccordionItem>
-        </Accordion>
-      </div>
+            <AccordionItem key="done" title="Completed" subtitle={`${issues.data?.done?.length || 0} issues`}>
+              <div className="flex justify-center px-2">
+                {issues.data?.done && issues.data.done.length === 0 && <p className="text-gray-600">No issues</p>}
+                {issues.data?.done && issues.data.done.length > 0 && <IssuesTable issues={issues.data?.done} />}
+              </div>
+            </AccordionItem>
+          </Accordion>
+        </div>
+      </section>
     </main>
   )
 }

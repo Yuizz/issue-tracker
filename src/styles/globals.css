@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.custom-accordion > div > h2 > button > span {
+  order: -1; /* Move the indicator to the left */
+  margin-right: 8px; /* Add some spacing between the indicator and the text */
+}

@@ -1,0 +1,16 @@
+.custom-accordion .nextui-accordion-header {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.custom-accordion {
+  background-color: red;
+}
+section {
+  background-color: red;
+}
+
+.custom-accordion .nextui-accordion-header .nextui-accordion-indicator {
+  order: -1; /* Move the indicator to the left */
+  margin-right: 8px; /* Add some spacing between the indicator and the text */
+}

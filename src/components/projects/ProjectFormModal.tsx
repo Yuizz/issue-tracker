@@ -12,7 +12,7 @@ type Props = {
   initialData?: {
     id: string
     name: string
-    description: string | null
+    description: string | undefined
     isPublic: boolean
   }
   userId?: string
