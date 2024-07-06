@@ -39,8 +39,6 @@ const Index: PageWithLayoutType = ({ slug }) => {
     </div>;
   }
 
-
-
   return (
     <main className="py-16 px-32">
       <section>
@@ -57,10 +55,10 @@ const Index: PageWithLayoutType = ({ slug }) => {
             className="custom-accordion"
             showDivider={false}>
             <AccordionItem
-              indicator={({ isOpen }) => (isOpen ? <>▼</> : <>▶</>)}
               key="pending"
               aria-label="Pending issues"
               title="Pending"
+              className="border-2 border-gray-200 rounded-lg p-4 mb-4"
               subtitle={`${(issues.data?.pending.length || "0")} issues`}>
               <div className="flex justify-center px-2">
                 {issues.data?.pending && issues.data.pending.length === 0 && <p className="text-gray-600">No issues</p>}
@@ -68,7 +66,9 @@ const Index: PageWithLayoutType = ({ slug }) => {
               </div>
             </AccordionItem>
 
-            <AccordionItem key="done" title="Completed" subtitle={`${issues.data?.done?.length || 0} issues`}>
+            <AccordionItem
+              className="border-2 border-gray-200 rounded-lg p-4"
+              key="done" title="Completed" subtitle={`${issues.data?.done?.length || 0} issues`}>
               <div className="flex justify-center px-2">
                 {issues.data?.done && issues.data.done.length === 0 && <p className="text-gray-600">No issues</p>}
                 {issues.data?.done && issues.data.done.length > 0 && <IssuesTable issues={issues.data?.done} />}

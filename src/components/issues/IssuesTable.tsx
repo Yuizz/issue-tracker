@@ -1,6 +1,7 @@
-import { Chip, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
+import { Chip, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from '@nextui-org/react'
 import React from 'react'
 import type { IssueResponse } from '~/server/api/routers/issues';
+import IssueModal from './IssueModal';
 
 const columns = [
   {
@@ -12,9 +13,17 @@ const columns = [
     label: "Status",
   },
   {
+    key: "description",
+    label: "Description",
+  },
+  {
     key: "dueDate",
     label: "Due Date",
   },
+  {
+    key: "actions",
+    label: "Actions"
+  }
 ]
 
 const statusColorMap: Record<string, "success" | "warning" | "secondary"> = {
@@ -39,6 +48,14 @@ function IssuesTable({ issues }: { issues: IssueResponse[] }) {
           <Chip className="capitalize" color={statusColorMap[value]} size="sm">
             {value}
           </Chip>
+        )
+      case 'actions':
+        return (
+          <div className="relative flex items-center gap-2">
+            <Tooltip content="Edit issue">
+              <IssueModal initialData={item} isIconOnly />
+            </Tooltip>
+          </div>
         )
       default: return cellValue?.toString();
     }

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, Switch, Textarea, useDisclosure } from "@nextui-org/react";
-import { useForm } from "react-hook-form";
+import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, Textarea, useDisclosure } from "@nextui-org/react";
+import { Controller, useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
@@ -21,6 +21,7 @@ export default function IssueModal({ initialData, projectId, isIconOnly }: Props
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm<z.infer<typeof CreateIssueSchema>>({
     resolver: zodResolver(CreateIssueSchema),
@@ -32,7 +33,9 @@ export default function IssueModal({ initialData, projectId, isIconOnly }: Props
 
   useEffect(() => {
     if (initialData) {
-      reset(initialData)
+      reset({
+        ...initialData,
+      })
     }
   }, [initialData, reset])
 
@@ -70,7 +73,7 @@ export default function IssueModal({ initialData, projectId, isIconOnly }: Props
     } else if (projectId) {
       createIssue.mutate({ ...data, projectId })
     } else {
-      console.error("projectId is required")
+      console.error("either projectId or initialData is required to create or update an issue")
     }
   })
 
@@ -101,12 +104,13 @@ export default function IssueModal({ initialData, projectId, isIconOnly }: Props
               <div className="flex flex-col gap-4">
                 <input
                   type="hidden"
+                  value={projectId}
                   {...register("projectId")}
                 />
 
                 <Input
                   autoFocus
-                  label="Name of the issue"
+                  label="Name"
                   placeholder="Issue #1"
                   variant="bordered"
                   isRequired
@@ -124,15 +128,29 @@ export default function IssueModal({ initialData, projectId, isIconOnly }: Props
                   {...register("description")}
                 />
 
-                <Input
-                  label="Due date"
-                  type="date"
-                  variant="bordered"
-                  isRequired
-                  isClearable
-                  isInvalid={errors.dueDate !== undefined}
-                  errorMessage={errors.dueDate?.message}
-                  {...register("dueDate")}
+                <Controller
+                  control={control}
+                  name="dueDate"
+                  render={({ field }) => {
+                    return (
+                      <Input
+                        label="Due date"
+                        type="date"
+                        variant="bordered"
+                        isRequired
+                        isClearable
+                        isInvalid={errors.dueDate !== undefined}
+                        errorMessage={errors.dueDate?.message}
+                        value={field.value?.toISOString().split("T")[0]}
+                        ref={field.ref}
+                        onChange={(event) => {
+                          const value = event.target.value ? new Date(event.target.value) : null
+
+                          field.onChange({ target: { value } })
+                        }}
+                      />
+                    )
+                  }}
                 />
 
                 <Select

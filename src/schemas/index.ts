@@ -13,10 +13,8 @@ export const EditProjectSchema = z.object({
 export const CreateIssueSchema = z.object({
   name: z.string().nonempty("The name of the issue is required"),
   description: z.string().nonempty("The description of the issue is required"),
-  dueDate: z.string().transform((val) => {
-    if (val === "") return undefined
-    return new Date(val).toISOString()
-  }).optional(),
+  dueDate: z.date().optional(),
+  // dueDate: z.string().optional(),
   status: z.enum(["todo", "done", "cancelled", "inProgress"]).default("todo"),
   assignes: z.array(z.string()).optional(),
 
