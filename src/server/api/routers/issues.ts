@@ -22,6 +22,7 @@ export type IssueResponse = Prisma.IssueGetPayload<{
   select: {
     id: true,
     name: true,
+    description: true,
     status: true,
     dueDate: true
   }
@@ -48,17 +49,17 @@ export const issuesRouter = createTRPCRouter({
         }
       })
 
-      if (input.assignes) {
-        await Promise.all(input.assignes.map(async (userId) => {
-          await ctx.prisma.issueToUser.create({
-            data: {
-              issueId: newIssue.id,
-              userId,
-            }
-          })
-        })
-        )
-      }
+      // if (input.assignes) {
+      //   await Promise.all(input.assignes.map(async (userId) => {
+      //     await ctx.prisma.issueToUser.create({
+      //       data: {
+      //         issueId: newIssue.id,
+      //         userId,
+      //       }
+      //     })
+      //   })
+      //   )
+      // }
 
       return newIssue
     })
@@ -67,7 +68,11 @@ export const issuesRouter = createTRPCRouter({
   update: protectedProcedure.input(
     UpdateIssueSchema
   ).mutation(async ({ ctx, input }) => {
-    const { id, assignes, ...updateData } = input
+    const
+      { id,
+        // assignes,
+        ...updateData
+      } = input
     const issue = await ctx.prisma.issue.update({
       where: {
         id
@@ -75,22 +80,22 @@ export const issuesRouter = createTRPCRouter({
       data: updateData
     })
 
-    if (assignes) {
-      await ctx.prisma.issueToUser.deleteMany({
-        where: {
-          issueId: id
-        }
-      })
+    // if (assignes) {
+    //   await ctx.prisma.issueToUser.deleteMany({
+    //     where: {
+    //       issueId: id
+    //     }
+    //   })
 
-      await Promise.all(assignes.map(async (userId) => {
-        await ctx.prisma.issueToUser.create({
-          data: {
-            issueId: issue.id,
-            userId,
-          }
-        })
-      }))
-    }
+    //   await Promise.all(assignes.map(async (userId) => {
+    //     await ctx.prisma.issueToUser.create({
+    //       data: {
+    //         issueId: issue.id,
+    //         userId,
+    //       }
+    //     })
+    //   }))
+    // }
 
     return issue
   }),

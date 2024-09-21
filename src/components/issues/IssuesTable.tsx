@@ -2,7 +2,7 @@ import { Chip, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, 
 import React from 'react'
 import type { IssueResponse } from '~/server/api/routers/issues';
 import IssueModal from './IssueModal';
-import { format, parse, removeOffset } from '@formkit/tempo';
+import { Issue } from '@prisma/client';
 
 const columns = [
   {
@@ -33,6 +33,8 @@ const statusColorMap: Record<string, "success" | "warning" | "secondary"> = {
   inProgress: 'secondary',
 }
 
+type ValidStatus = "done" | "inProgress" | "todo" | "cancelled"
+
 function IssuesTable({ issues }: { issues: IssueResponse[] }) {
   const renderCell = React.useCallback((item: IssueResponse, columnKey: React.Key) => {
     const cellValue = item[columnKey as keyof IssueResponse];
@@ -56,10 +58,15 @@ function IssuesTable({ issues }: { issues: IssueResponse[] }) {
           </Chip>
         )
       case 'actions':
+        const status = item.status as ValidStatus
         return (
           <div className="relative flex items-center gap-2">
             <Tooltip content="Edit issue">
-              <IssueModal initialData={item} isIconOnly />
+              <IssueModal initialData={{
+                ...item,
+                description: item.description as string,
+                status
+              }} isIconOnly />
             </Tooltip>
           </div>
         )

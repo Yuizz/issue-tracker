@@ -16,7 +16,7 @@ export const CreateIssueSchema = z.object({
   dueDate: z.date().nullable(),
   // dueDate: z.string().optional(),
   status: z.enum(["todo", "done", "cancelled", "inProgress"]).default("todo"),
-  assignes: z.array(z.string()).optional(),
+  // assignes: z.array(z.string()).optional(),
 
   projectId: z.string().nonempty("The project id is required"),
 })
