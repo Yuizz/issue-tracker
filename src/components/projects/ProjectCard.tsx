@@ -39,7 +39,7 @@ function ProjectCard({ project, isEditable = false, userId }: Props) {
               initialData={{
                 id: project.id,
                 name: project.name,
-                description: project.description,
+                description: project.description as string,
                 isPublic: project.isPublic
               }} isIconOnly />
             <DeleteProjectModal projectId={project.id} projectName={project.name} isIconOnly />
