@@ -1,8 +1,7 @@
-import { Box } from "@chakra-ui/react";
 import React from "react";
 
 function AddUserView() {
-  return <Box></Box>;
+  return <div></div>;
 }
 
 export default AddUserView;
