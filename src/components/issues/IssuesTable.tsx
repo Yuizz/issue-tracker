@@ -2,6 +2,7 @@ import { Chip, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, 
 import React from 'react'
 import type { IssueResponse } from '~/server/api/routers/issues';
 import IssueModal from './IssueModal';
+import { format, parse, removeOffset } from '@formkit/tempo';
 
 const columns = [
   {
@@ -39,9 +40,14 @@ function IssuesTable({ issues }: { issues: IssueResponse[] }) {
 
     switch (columnKey) {
       case 'dueDate':
-        value = cellValue as string | null;
+        value = cellValue as Date | null;
         if (!value) return '';
-        return new Date(value).toLocaleDateString();
+
+        const day = String(value.getUTCDate()).padStart(2, "0");
+        const month = String(value.getUTCMonth() + 1).padStart(2, "0");
+        const year = value.getUTCFullYear();
+
+        return `${day}/${month}/${year}`
       case 'status':
         value = cellValue as keyof typeof statusColorMap;
         return (
