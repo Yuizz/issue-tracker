@@ -5,7 +5,7 @@ import { api } from '~/utils/api';
 import Layout from './layout';
 import Overview from '~/components/projects/view/Overview';
 import ProjectNotFound from '~/components/projects/ProjectNotFound';
-import { Accordion, AccordionItem, Spinner } from '@nextui-org/react';
+import { Accordion, AccordionItem, Skeleton, Spinner } from '@nextui-org/react';
 import styles from "./styles.module.css"
 import IssuesTable from '~/components/issues/IssuesTable';
 import IssueModal from '~/components/issues/IssueModal';
@@ -29,7 +29,7 @@ const Index: PageWithLayoutType = ({ slug }) => {
   const issues = api.issues.getByProject.useQuery({ slug });
 
 
-  if (project.isInitialLoading || issues.isInitialLoading) {
+  if (project.isInitialLoading) {
     return <div className="flex justify-center py-40"><Spinner label="Loading project..." /></div>;
   }
 
@@ -45,37 +45,41 @@ const Index: PageWithLayoutType = ({ slug }) => {
         <div>{project.data?.name}</div>
         <Overview name={project.data?.name || ''} />
       </section>
-      <section>
-        <IssueModal projectId={project.data?.id} />
-        <div className="py-10">
-          <Accordion
-            isCompact={true}
-            selectionMode="multiple"
-            defaultExpandedKeys={["pending"]}
-            className="custom-accordion"
-            showDivider={false}>
-            <AccordionItem
-              key="pending"
-              aria-label="Pending issues"
-              title="Pending"
-              className="border-2 border-gray-200 rounded-lg p-4 mb-4"
-              subtitle={`${(issues.data?.pending.length || "0")} issues`}>
-              <div className="flex justify-center px-2">
-                {issues.data?.pending && issues.data.pending.length === 0 && <p className="text-gray-600">No issues</p>}
-                {issues.data?.pending && issues.data.pending.length > 0 && <IssuesTable issues={issues.data?.pending} />}
-              </div>
-            </AccordionItem>
-
-            <AccordionItem
-              className="border-2 border-gray-200 rounded-lg p-4"
-              key="done" title="Completed" subtitle={`${issues.data?.done?.length || 0} issues`}>
-              <div className="flex justify-center px-2">
-                {issues.data?.done && issues.data.done.length === 0 && <p className="text-gray-600">No issues</p>}
-                {issues.data?.done && issues.data.done.length > 0 && <IssuesTable issues={issues.data?.done} />}
-              </div>
-            </AccordionItem>
-          </Accordion>
+      <section className='flex flex-col gap-2'>
+        <div>
+          <IssueModal projectId={project.data?.id} />
         </div>
+        <Skeleton isLoaded={!issues.isInitialLoading} className='rounded-lg'>
+          <div className="py-10">
+            <Accordion
+              isCompact={true}
+              selectionMode="multiple"
+              defaultExpandedKeys={["pending"]}
+              className="custom-accordion"
+              showDivider={false}>
+              <AccordionItem
+                key="pending"
+                aria-label="Pending issues"
+                title="Pending"
+                className="border-2 border-gray-200 rounded-lg p-4 mb-4"
+                subtitle={`${(issues.data?.pending.length || "0")} issues`}>
+                <div className="flex justify-center px-2">
+                  {issues.data?.pending && issues.data.pending.length === 0 && <p className="text-gray-600">No issues</p>}
+                  {issues.data?.pending && issues.data.pending.length > 0 && <IssuesTable issues={issues.data?.pending} />}
+                </div>
+              </AccordionItem>
+
+              <AccordionItem
+                className="border-2 border-gray-200 rounded-lg p-4"
+                key="done" title="Completed" subtitle={`${issues.data?.done?.length || 0} issues`}>
+                <div className="flex justify-center px-2">
+                  {issues.data?.done && issues.data.done.length === 0 && <p className="text-gray-600">No issues</p>}
+                  {issues.data?.done && issues.data.done.length > 0 && <IssuesTable issues={issues.data?.done} />}
+                </div>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        </Skeleton>
       </section>
     </main>
   )

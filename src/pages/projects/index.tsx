@@ -6,12 +6,14 @@ function index() {
   const projectsQuery = api.projects.getAllPublic.useQuery();
   const projects = projectsQuery.data;
   return (
-
-    <div className="grid grid-cols-responsive-300 w-full gap-3 pt-3 px-8 duration-500 animate-in fade-in-5 slide-in-from-bottom-2">
-      {projects?.map(project => (
-        <ProjectCard key={project.id} project={project} />
-      ))}
-    </div>
+    <section className="px-8 pt-4">
+      <h2 className="font-bold text-xl">Explore public projects</h2>
+      <div className="grid grid-cols-responsive-300 w-full gap-3 pt-3 px-8 duration-500 animate-in fade-in-5 slide-in-from-bottom-2">
+        {projects?.map(project => (
+          <ProjectCard key={project.id} project={project} />
+        ))}
+      </div>
+    </section>
   )
 }
 

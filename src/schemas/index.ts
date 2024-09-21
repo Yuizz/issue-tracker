@@ -13,7 +13,7 @@ export const EditProjectSchema = z.object({
 export const CreateIssueSchema = z.object({
   name: z.string().nonempty("The name of the issue is required"),
   description: z.string().nonempty("The description of the issue is required"),
-  dueDate: z.date().optional(),
+  dueDate: z.date().nullable(),
   // dueDate: z.string().optional(),
   status: z.enum(["todo", "done", "cancelled", "inProgress"]).default("todo"),
   assignes: z.array(z.string()).optional(),
