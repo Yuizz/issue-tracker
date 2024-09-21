@@ -25,30 +25,34 @@ export function getServerSideProps(
 type PageWithLayoutType = NextPageWithLayout<InferGetServerSidePropsType<typeof getServerSideProps>>
 
 const Index: PageWithLayoutType = ({ slug }) => {
-  const project = api.projects.getBySlug.useQuery({ slug });
+  const projectQuery = api.projects.getBySlug.useQuery({ slug });
   const issues = api.issues.getByProject.useQuery({ slug });
 
 
-  if (project.isInitialLoading) {
+  if (projectQuery.isInitialLoading) {
     return <div className="flex justify-center py-40"><Spinner label="Loading project..." /></div>;
   }
 
-  if (!project.data) {
+  if (!projectQuery.data) {
     return <div className="flex justify-center py-20">
       <ProjectNotFound />
     </div>;
   }
 
+  const { project, isUserAssigned } = projectQuery.data
+
   return (
     <main className="py-16 px-32">
       <section>
-        <div>{project.data?.name}</div>
-        <Overview name={project.data?.name || ''} />
+        <div>{project.name}</div>
+        <Overview name={project.name || ''} />
       </section>
       <section className='flex flex-col gap-2'>
-        <div>
-          <IssueModal projectId={project.data?.id} />
-        </div>
+        {isUserAssigned && (
+          <div>
+            <IssueModal projectId={project.id} />
+          </div>
+        )}
         <Skeleton isLoaded={!issues.isInitialLoading} className='rounded-lg'>
           <div className="py-10">
             <Accordion

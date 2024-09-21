@@ -116,27 +116,14 @@ export const issuesRouter = createTRPCRouter({
       }
     })
 
-    if (!project || (!project.isPublic && (!ctx || !ctx.session))) {
+    if (!project || (!project.isPublic && !ctx.session?.user)) {
       throw new TRPCError({
         code: "NOT_FOUND",
         message: "Project not found"
       })
     }
 
-    if (!ctx.session) {
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Project not found"
-      })
-    }
-
-    const user = ctx.session.user;
-    if (!project.isPublic && !project.users.some(u => u.userId === user.id)) {
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Project not found"
-      })
-    }
+    const isUserAssignedToProject = (!!ctx.session?.user && !!project.users.some(u => u.userId === ctx.session?.user.id))
 
     const projectId = project.id
     const doneStatuses = [
@@ -171,7 +158,8 @@ export const issuesRouter = createTRPCRouter({
 
     return {
       done: doneIssues,
-      pending: pendingIssues
+      pending: pendingIssues,
+      isUserAssignedToProject
     }
   })
 });

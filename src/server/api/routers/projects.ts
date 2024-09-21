@@ -208,7 +208,9 @@ export const projectsRouter = createTRPCRouter({
         })
       }
 
-      if (project.isPublic) return project
+      const isUserAssigned = (!!ctx.session?.user && !!project.users.some(u => u.userId === ctx.session?.user.id))
+
+      if (project.isPublic) return { project, isUserAssigned }
 
       const user = ctx.session?.user
       if (!user || !user.id) {
@@ -229,7 +231,9 @@ export const projectsRouter = createTRPCRouter({
         })
       }
 
-      return project
+      return {
+        project, isUserAssigned
+      }
     }),
 
   getByUser: protectedProcedure
