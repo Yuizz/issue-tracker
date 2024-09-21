@@ -246,7 +246,7 @@ export const projectsRouter = createTRPCRouter({
           where: {
             projectId,
             status: {
-              notIn: ["closed", "canceled", "done"]
+              notIn: ["closed", "cancelled", "done"]
             }
           },
         })
