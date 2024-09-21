@@ -44,8 +44,11 @@ const Index: PageWithLayoutType = ({ slug }) => {
   return (
     <main className="py-16 px-32">
       <section>
-        <div>{project.name}</div>
-        <Overview name={project.name || ''} />
+        <div className='flex flex-col gap-1 py-4'>
+          <h2 className='font-bold text-xl'>{project.name}</h2>
+          <p>{project.description}</p>
+        </div>
+        {/* <Overview name={project.name || ''} /> */}
       </section>
       <section className='flex flex-col gap-2'>
         {isUserAssigned && (
