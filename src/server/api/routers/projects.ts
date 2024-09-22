@@ -208,9 +208,9 @@ export const projectsRouter = createTRPCRouter({
         })
       }
 
-      const isUserAssigned = (!!ctx.session?.user && !!project.users.some(u => u.userId === ctx.session?.user.id))
+      const isUserAssigned = (!!ctx.session?.user && project.users.some(u => u.userId === ctx.session?.user.id))
 
-      if (project.isPublic) return { project, isUserAssigned }
+      if (project.isPublic && !isUserAssigned) return { project, isUserAssigned, canUserEdit: false }
 
       const user = ctx.session?.user
       if (!user || !user.id) {
@@ -231,8 +231,10 @@ export const projectsRouter = createTRPCRouter({
         })
       }
 
+      const canUserEdit = userInProject?.isEditor || userInProject?.isOwner
+
       return {
-        project, isUserAssigned
+        project, isUserAssigned, canUserEdit
       }
     }),
 

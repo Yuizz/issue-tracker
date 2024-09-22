@@ -49,6 +49,7 @@ export default function ProjectFormModal({ initialData, userId, isIconOnly }: Pr
   const createProject = api.projects.create.useMutation({
     onSuccess: async () => {
       await utils.projects.getByUser.invalidate()
+      await utils.projects.getBySlug.invalidate()
       onCloseModal()
     },
     onError: () => {
@@ -58,7 +59,11 @@ export default function ProjectFormModal({ initialData, userId, isIconOnly }: Pr
 
   const updateProject = api.projects.update.useMutation({
     onSuccess: async () => {
-      if (userId) await utils.projects.getByUser.invalidate({ userId })
+      if (userId) {
+        await utils.projects.getByUser.invalidate({ userId })
+        await utils.projects.getBySlug.invalidate()
+      }
+
       onCloseModal()
     },
     onError: () => {

@@ -5,7 +5,7 @@ import { api } from "~/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
 import { CreateIssueSchema, type UpdateIssueSchema } from "~/schemas"
-import { BadgeAlert, SettingsIcon } from "lucide-react";
+import { FilePlus, SettingsIcon } from "lucide-react";
 import { useEffect } from "react";
 
 type Props = {
@@ -81,10 +81,10 @@ export default function IssueModal({ initialData, projectId, isIconOnly }: Props
     {isIconOnly ?
       (initialData
         ? <SettingsIcon size={15} onClick={onOpen} className="cursor-pointer" />
-        : <BadgeAlert size={15} onClick={onOpen} className="cursor-pointer" />
+        : <FilePlus size={15} onClick={onOpen} className="cursor-pointer" />
       )
       :
-      <Button onPress={onOpen} color="primary" startContent={initialData ? <SettingsIcon /> : <BadgeAlert />}>
+      <Button onPress={onOpen} color="success" startContent={initialData ? <SettingsIcon /> : <FilePlus />}>
         {initialData ? "Edit issue" : "New issue"}
       </Button>
     }

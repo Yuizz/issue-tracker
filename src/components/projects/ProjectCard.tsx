@@ -1,4 +1,4 @@
-import { Lock, LockOpen, TrashIcon } from 'lucide-react';
+import { Lock, LockOpen } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react'
 import { type Project } from '@prisma/client';
